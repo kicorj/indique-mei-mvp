@@ -1,0 +1,161 @@
+<div class="pagamento-container">
+  <div class="pagamento-header">
+    <button mat-icon-button (click)="router.navigate(['/contratante/agendamento', profissional()?.id])">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <h1>Pagamento</h1>
+  </div>
+
+  <div class="pagamento-content">
+    @if (profissional(); as prof) {
+      <!-- Resumo do Serviço -->
+      <mat-card class="order-summary">
+        <h2>Resumo do Pedido</h2>
+        <div class="summary-items">
+          <div class="summary-item">
+            <span class="label">Profissional:</span>
+            <span class="value">{{ prof.nome }}</span>
+          </div>
+          <div class="summary-item">
+            <span class="label">Serviço:</span>
+            <span class="value">{{ prof.categoria }}</span>
+          </div>
+          <div class="summary-item highlight">
+            <span class="label">Total:</span>
+            <span class="value">R$ {{ prof.precoBase?.toLocaleString('pt-BR') }}</span>
+          </div>
+        </div>
+      </mat-card>
+
+      <!-- Método de Pagamento -->
+      <mat-card class="payment-method-card">
+        <h2>Método de Pagamento</h2>
+
+        <mat-radio-group [(value)]="paymentMethod" class="payment-options">
+          <div class="payment-option" [class.selected]="paymentMethod() === 'pix'" (click)="paymentMethod.set('pix')">
+            <mat-radio-button value="pix">
+              <div class="option-content">
+                <mat-icon>qr_code</mat-icon>
+                <div>
+                  <strong>PIX</strong>
+                  <p>Pagamento instantâneo</p>
+                </div>
+              </div>
+            </mat-radio-button>
+          </div>
+
+          <div class="payment-option" [class.selected]="paymentMethod() === 'cartao'" (click)="paymentMethod.set('cartao')">
+            <mat-radio-button value="cartao">
+              <div class="option-content">
+                <mat-icon>credit_card</mat-icon>
+                <div>
+                  <strong>Cartão de Crédito</strong>
+                  <p>Parcelamento disponível</p>
+                </div>
+              </div>
+            </mat-radio-button>
+          </div>
+        </mat-radio-group>
+      </mat-card>
+
+      <!-- PIX -->
+      @if (paymentMethod() === 'pix') {
+        <mat-card class="pix-card">
+          <h3>
+            <mat-icon>qr_code</mat-icon>
+            Pagar com PIX
+          </h3>
+
+          <div class="qr-code-placeholder">
+            <mat-icon>qr_code_scanner</mat-icon>
+            <p>Escaneie o QR Code com seu app de pagamento</p>
+          </div>
+
+          <div class="pix-code">
+            <p class="code-label">Ou copie o código PIX:</p>
+            <div class="code-box">
+              <code>{{ pixCode() }}</code>
+              <button mat-icon-button (click)="copyPixCode()">
+                <mat-icon>content_copy</mat-icon>
+              </button>
+            </div>
+          </div>
+
+          <button
+            mat-raised-button
+            color="primary"
+            class="confirm-btn"
+            (click)="processPayment()"
+            [disabled]="processing()"
+          >
+            @if (processing()) {
+              <mat-spinner diameter="24"></mat-spinner>
+            } @else {
+              <mat-icon>check_circle</mat-icon>
+              <span>Confirmar Pagamento</span>
+            }
+          </button>
+        </mat-card>
+      }
+
+      <!-- Cartão -->
+      @if (paymentMethod() === 'cartao') {
+        <mat-card class="card-form-card">
+          <h3>
+            <mat-icon>credit_card</mat-icon>
+            Dados do Cartão
+          </h3>
+
+          <form [formGroup]="paymentForm" (ngSubmit)="processPayment()">
+            <mat-form-field appearance="outline">
+              <mat-label>Número do Cartão</mat-label>
+              <input matInput formControlName="cardNumber" placeholder="0000 0000 0000 0000" maxlength="19">
+              <mat-icon matPrefix>credit_card</mat-icon>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Nome no Cartão</mat-label>
+              <input matInput formControlName="cardName" placeholder="NOME COMO NO CARTÃO">
+              <mat-icon matPrefix>person</mat-icon>
+            </mat-form-field>
+
+            <div class="card-details-row">
+              <mat-form-field appearance="outline">
+                <mat-label>Validade</mat-label>
+                <input matInput formControlName="cardExpiry" placeholder="MM/AA" maxlength="5">
+                <mat-icon matPrefix>calendar_today</mat-icon>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>CVV</mat-label>
+                <input matInput formControlName="cardCvv" placeholder="123" maxlength="3" type="password">
+                <mat-icon matPrefix>lock</mat-icon>
+              </mat-form-field>
+            </div>
+
+            <button
+              mat-raised-button
+              color="primary"
+              type="submit"
+              class="confirm-btn"
+              [disabled]="processing()"
+            >
+              @if (processing()) {
+                <mat-spinner diameter="24"></mat-spinner>
+              } @else {
+                <mat-icon>payment</mat-icon>
+                <span>Pagar R$ {{ prof.precoBase?.toLocaleString('pt-BR') }}</span>
+              }
+            </button>
+          </form>
+        </mat-card>
+      }
+
+      <!-- Info Segurança -->
+      <div class="security-info">
+        <mat-icon>security</mat-icon>
+        <p>Seus dados estão protegidos com criptografia de ponta a ponta</p>
+      </div>
+    }
+  </div>
+</div>

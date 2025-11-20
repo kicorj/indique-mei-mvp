@@ -1,0 +1,132 @@
+<div class="agendamento-container">
+  <div class="agendamento-header">
+    <button mat-icon-button (click)="router.navigate(['/contratante/chat', profissional()?.id])">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <h1>Agendar Serviço</h1>
+  </div>
+
+  <div class="agendamento-content">
+    @if (profissional(); as prof) {
+      <!-- Info do Profissional -->
+      <mat-card class="prof-summary">
+        <div class="prof-info">
+          <div class="prof-avatar">
+            <mat-icon>person</mat-icon>
+          </div>
+          <div>
+            <h3>{{ prof.nome }}</h3>
+            <p>{{ prof.categoria }}</p>
+          </div>
+        </div>
+        @if (prof.precoBase) {
+          <div class="price-info">
+            <span class="price-value">R$ {{ prof.precoBase.toLocaleString('pt-BR') }}</span>
+          </div>
+        }
+      </mat-card>
+
+      <!-- Formulário -->
+      <form [formGroup]="agendamentoForm" (ngSubmit)="confirmarAgendamento()">
+        <mat-card class="form-section">
+          <h2>
+            <mat-icon>event</mat-icon>
+            Escolha a Data
+          </h2>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Selecione uma data</mat-label>
+            <input
+              matInput
+              [matDatepicker]="picker"
+              formControlName="data"
+              [min]="minDate"
+              placeholder="DD/MM/AAAA"
+            >
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+        </mat-card>
+
+        <mat-card class="form-section">
+          <h2>
+            <mat-icon>schedule</mat-icon>
+            Escolha o Horário
+          </h2>
+
+          <div class="time-grid">
+            @for (time of horariosDisponiveis; track time) {
+              <button
+                type="button"
+                mat-stroked-button
+                [class.selected]="selectedTime() === time"
+                (click)="selectTime(time)"
+              >
+                {{ time }}
+              </button>
+            }
+          </div>
+        </mat-card>
+
+        <mat-card class="form-section">
+          <h2>
+            <mat-icon>place</mat-icon>
+            Local do Serviço
+          </h2>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Endereço completo</mat-label>
+            <textarea
+              matInput
+              formControlName="endereco"
+              placeholder="Rua, número, complemento, bairro..."
+              rows="3"
+            ></textarea>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Observações (Opcional)</mat-label>
+            <textarea
+              matInput
+              formControlName="observacoes"
+              placeholder="Informações adicionais sobre o serviço..."
+              rows="3"
+            ></textarea>
+          </mat-form-field>
+        </mat-card>
+
+        <!-- Resumo -->
+        <mat-card class="summary-section">
+          <h3>Resumo do Agendamento</h3>
+          <div class="summary-items">
+            <div class="summary-item">
+              <mat-icon>event</mat-icon>
+              <span>{{ agendamentoForm.value.data ? (agendamentoForm.value.data | date: 'dd/MM/yyyy') : 'Selecione a data' }}</span>
+            </div>
+            <div class="summary-item">
+              <mat-icon>schedule</mat-icon>
+              <span>{{ selectedTime() || 'Selecione o horário' }}</span>
+            </div>
+            @if (prof.precoBase) {
+              <div class="summary-item price">
+                <mat-icon>attach_money</mat-icon>
+                <span>R$ {{ prof.precoBase.toLocaleString('pt-BR') }}</span>
+              </div>
+            }
+          </div>
+        </mat-card>
+
+        <button
+          mat-raised-button
+          color="primary"
+          type="submit"
+          class="confirm-btn"
+          [disabled]="agendamentoForm.invalid || !selectedTime()"
+        >
+          <mat-icon>payment</mat-icon>
+          Ir para Pagamento
+        </button>
+      </form>
+    }
+  </div>
+</div>

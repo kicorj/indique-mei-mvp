@@ -1,0 +1,139 @@
+<div class="avaliacao-container">
+  <!-- Header de Sucesso -->
+  <div class="success-header">
+    <div class="success-icon">
+      <mat-icon>check_circle</mat-icon>
+    </div>
+    <h1>Pagamento Confirmado!</h1>
+    <p>Seu serviço foi agendado com sucesso</p>
+  </div>
+
+  <div class="avaliacao-content">
+    @if (profissional(); as prof) {
+      <!-- Info do Profissional -->
+      <mat-card class="prof-card">
+        <div class="prof-info">
+          <div class="prof-avatar">
+            <mat-icon>person</mat-icon>
+          </div>
+          <div>
+            <h3>{{ prof.nome }}</h3>
+            <p>{{ prof.categoria }}</p>
+          </div>
+        </div>
+      </mat-card>
+
+      <!-- Avaliação -->
+      <mat-card class="rating-card">
+        <h2>Como foi o serviço?</h2>
+        <p class="subtitle">Sua avaliação ajuda outros clientes</p>
+
+        <!-- Estrelas -->
+        <div class="stars-rating">
+          @for (star of [1, 2, 3, 4, 5]; track star) {
+            <button
+              mat-icon-button
+              class="star-button"
+              [class.active]="star <= rating()"
+              (click)="setRating(star)"
+            >
+              <mat-icon>{{ star <= rating() ? 'star' : 'star_border' }}</mat-icon>
+            </button>
+          }
+        </div>
+
+        @if (rating() > 0) {
+          <p class="rating-label">
+            @if (rating() === 5) {
+              Excelente! ⭐
+            } @else if (rating() >= 4) {
+              Muito bom! 👍
+            } @else if (rating() >= 3) {
+              Bom
+            } @else {
+              Pode melhorar
+            }
+          </p>
+        }
+
+        <!-- Comentário -->
+        <form [formGroup]="avaliacaoForm">
+          <mat-form-field appearance="outline">
+            <mat-label>Conte sua experiência</mat-label>
+            <textarea
+              matInput
+              formControlName="comentario"
+              placeholder="O que você achou do serviço? Comente sobre pontualidade, qualidade, atendimento..."
+              rows="5"
+              maxlength="500"
+            ></textarea>
+            <mat-hint align="end">
+              {{ avaliacaoForm.get('comentario')?.value?.length || 0 }}/500
+            </mat-hint>
+            @if (avaliacaoForm.get('comentario')?.hasError('minlength')) {
+              <mat-error>Comentário deve ter no mínimo 20 caracteres</mat-error>
+            }
+          </mat-form-field>
+        </form>
+      </mat-card>
+
+      <!-- Gorjeta (Opcional) -->
+      <mat-card class="gorjeta-card">
+        <h3>
+          <mat-icon>volunteer_activism</mat-icon>
+          Deseja deixar uma gorjeta? (Opcional)
+        </h3>
+        <p class="subtitle">Mostre seu apreço pelo ótimo trabalho</p>
+
+        <div class="gorjeta-options">
+          @for (value of gorjetaSuggestions; track value) {
+            <button
+              mat-stroked-button
+              [class.selected]="gorjeta() === value"
+              (click)="selectGorjeta(value)"
+            >
+              R$ {{ value }},00
+            </button>
+          }
+        </div>
+
+        @if (gorjeta()) {
+          <div class="gorjeta-selected">
+            <mat-icon>favorite</mat-icon>
+            <span>Gorjeta de R$ {{ gorjeta() }},00 será adicionada</span>
+          </div>
+        }
+      </mat-card>
+
+      <!-- Ações -->
+      <div class="actions">
+        <button
+          mat-raised-button
+          color="primary"
+          class="submit-btn"
+          (click)="enviarAvaliacao()"
+          [disabled]="avaliacaoForm.invalid || rating() === 0"
+        >
+          <mat-icon>send</mat-icon>
+          Enviar Avaliação
+        </button>
+
+        <button
+          mat-stroked-button
+          color="primary"
+          (click)="compartilharExperiencia()"
+        >
+          <mat-icon>share</mat-icon>
+          Compartilhar Experiência
+        </button>
+
+        <button
+          mat-button
+          (click)="router.navigate(['/home'])"
+        >
+          Pular por agora
+        </button>
+      </div>
+    }
+  </div>
+</div>
