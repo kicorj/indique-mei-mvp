@@ -7,6 +7,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { UserService } from '../../../core/services';
 import { Profissional, Rating } from '../../../core/models';
 
@@ -20,12 +21,14 @@ import { Profissional, Rating } from '../../../core/models';
     MatCardModule,
     MatChipsModule,
     MatTabsModule,
-    MatDividerModule
+    MatDividerModule,
+    MatProgressSpinnerModule
   ],
   templateUrl: './perfil-profissional.component.html',
   styleUrls: ['./perfil-profissional.component.scss']
 })
 export class PerfilProfissionalComponent implements OnInit {
+  Math = Math;
   profissional = signal<Profissional | null>(null);
   loading = signal(true);
   isFavorito = signal(false);
@@ -63,7 +66,7 @@ export class PerfilProfissionalComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private router: Router,
+    public router: Router,
     private userService: UserService
   ) {}
 
