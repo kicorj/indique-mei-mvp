@@ -42,7 +42,7 @@ export class ChatComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private router: Router,
+    public router: Router,
     private userService: UserService,
     private authService: AuthService
   ) {}

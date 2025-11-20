@@ -31,7 +31,7 @@
       <mat-card class="payment-method-card">
         <h2>Método de Pagamento</h2>
 
-        <mat-radio-group [(value)]="paymentMethod" class="payment-options">
+        <mat-radio-group [value]="paymentMethod()" class="payment-options">
           <div class="payment-option" [class.selected]="paymentMethod() === 'pix'" (click)="paymentMethod.set('pix')">
             <mat-radio-button value="pix">
               <div class="option-content">

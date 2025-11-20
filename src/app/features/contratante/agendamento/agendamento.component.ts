@@ -46,7 +46,7 @@ export class AgendamentoComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
-    private router: Router,
+    public router: Router,
     private userService: UserService
   ) {
     this.agendamentoForm = this.fb.group({

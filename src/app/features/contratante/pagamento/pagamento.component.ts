@@ -41,7 +41,7 @@ export class PagamentoComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
-    private router: Router,
+    public router: Router,
     private userService: UserService,
     private snackBar: MatSnackBar
   ) {

@@ -8,6 +8,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { UserService, IndicationService } from '../../../core/services';
 import { Profissional } from '../../../core/models';
 
@@ -27,7 +28,8 @@ interface ProfissionalComIndicacao extends Profissional {
     MatChipsModule,
     MatBadgeModule,
     MatSelectModule,
-    MatFormFieldModule
+    MatFormFieldModule,
+    MatProgressSpinnerModule
   ],
   templateUrl: './indicacoes.component.html',
   styleUrls: ['./indicacoes.component.scss']
