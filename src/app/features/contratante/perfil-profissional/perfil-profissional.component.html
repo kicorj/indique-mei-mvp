@@ -1,0 +1,237 @@
+<div class="perfil-container">
+  @if (loading()) {
+    <div class="loading-state">
+      <mat-spinner></mat-spinner>
+    </div>
+  }
+
+  @if (!loading() && profissional(); as prof) {
+    <!-- Header com Foto -->
+    <div class="perfil-header">
+      <button mat-icon-button class="back-button" (click)="router.navigate(['/contratante/indicacoes'])">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+
+      <button
+        mat-icon-button
+        class="share-button"
+        (click)="compartilhar()"
+      >
+        <mat-icon>share</mat-icon>
+      </button>
+
+      <div class="header-content">
+        <div class="prof-photo-large">
+          <mat-icon>person</mat-icon>
+        </div>
+
+        <h1>{{ prof.nome }}</h1>
+
+        <div class="prof-category">
+          <mat-icon>work</mat-icon>
+          <span>{{ prof.categoria }}</span>
+        </div>
+
+        <!-- Rating -->
+        <div class="prof-rating">
+          <div class="stars">
+            @for (star of getStarArray(prof.avaliacaoMedia); track $index) {
+              <mat-icon [class.filled]="star === 1">
+                {{ star === 1 ? 'star' : 'star_border' }}
+              </mat-icon>
+            }
+          </div>
+          <span class="rating-text">{{ prof.avaliacaoMedia.toFixed(1) }}</span>
+          <span class="rating-count">({{ prof.servicosRealizados }} serviços)</span>
+        </div>
+
+        <!-- Badges -->
+        <div class="prof-badges">
+          @if (prof.verificadoMEI) {
+            <mat-chip class="badge-mei">
+              <mat-icon>verified</mat-icon>
+              MEI Verificado
+            </mat-chip>
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- Conteúdo -->
+    <div class="perfil-content">
+      <!-- Actions fixas -->
+      <div class="action-bar">
+        <button
+          mat-icon-button
+          class="fav-btn"
+          [class.favorited]="isFavorito()"
+          (click)="toggleFavorito()"
+        >
+          <mat-icon>{{ isFavorito() ? 'favorite' : 'favorite_border' }}</mat-icon>
+        </button>
+
+        <button
+          mat-raised-button
+          color="primary"
+          class="primary-action"
+          (click)="iniciarChat()"
+        >
+          <mat-icon>chat</mat-icon>
+          Chamar
+        </button>
+
+        <button
+          mat-stroked-button
+          color="primary"
+          (click)="agendarDireto()"
+        >
+          <mat-icon>event</mat-icon>
+          Agendar
+        </button>
+      </div>
+
+      <!-- Tabs de Conteúdo -->
+      <mat-tab-group>
+        <!-- Tab Sobre -->
+        <mat-tab label="Sobre">
+          <div class="tab-content">
+            <!-- Bio -->
+            @if (prof.bio) {
+              <mat-card class="info-section">
+                <h3>
+                  <mat-icon>person</mat-icon>
+                  Sobre
+                </h3>
+                <p>{{ prof.bio }}</p>
+              </mat-card>
+            }
+
+            <!-- Preço -->
+            @if (prof.precoBase) {
+              <mat-card class="info-section">
+                <h3>
+                  <mat-icon>attach_money</mat-icon>
+                  Preço Base
+                </h3>
+                <div class="price-info">
+                  <span class="price-value">R$ {{ prof.precoBase.toLocaleString('pt-BR') }}</span>
+                  <span class="price-label">A partir de</span>
+                </div>
+              </mat-card>
+            }
+
+            <!-- Localização -->
+            <mat-card class="info-section">
+              <h3>
+                <mat-icon>place</mat-icon>
+                Localização e Atendimento
+              </h3>
+              <div class="location-info">
+                <div class="location-item">
+                  <mat-icon>home</mat-icon>
+                  <span>{{ prof.bairro }}, {{ prof.cidade }}</span>
+                </div>
+                @if (prof.cidadesAtendidas && prof.cidadesAtendidas.length > 0) {
+                  <div class="attended-cities">
+                    <p class="section-subtitle">Cidades atendidas:</p>
+                    <div class="city-chips">
+                      @for (cidade of prof.cidadesAtendidas; track cidade) {
+                        <mat-chip>{{ cidade }}</mat-chip>
+                      }
+                    </div>
+                  </div>
+                }
+              </div>
+            </mat-card>
+
+            <!-- Estatísticas -->
+            <mat-card class="info-section">
+              <h3>
+                <mat-icon>bar_chart</mat-icon>
+                Estatísticas
+              </h3>
+              <div class="stats-grid">
+                <div class="stat-item">
+                  <div class="stat-value">{{ prof.servicosRealizados }}</div>
+                  <div class="stat-label">Serviços</div>
+                </div>
+                <div class="stat-item">
+                  <div class="stat-value">{{ prof.avaliacaoMedia.toFixed(1) }}</div>
+                  <div class="stat-label">Avaliação</div>
+                </div>
+                <div class="stat-item">
+                  <div class="stat-value">{{ Math.round((prof.servicosRealizados / (prof.servicosRealizados + 5)) * 100) }}%</div>
+                  <div class="stat-label">Taxa de Sucesso</div>
+                </div>
+              </div>
+            </mat-card>
+          </div>
+        </mat-tab>
+
+        <!-- Tab Portfólio -->
+        <mat-tab label="Portfólio">
+          <div class="tab-content">
+            @if (prof.portfolio && prof.portfolio.length > 0) {
+              <div class="portfolio-grid">
+                @for (item of prof.portfolio; track item.id) {
+                  <div class="portfolio-item">
+                    <img [src]="item.imageUrl" [alt]="item.descricao || 'Trabalho realizado'">
+                    @if (item.descricao) {
+                      <div class="portfolio-caption">
+                        <p>{{ item.descricao }}</p>
+                      </div>
+                    }
+                  </div>
+                }
+              </div>
+            } @else {
+              <div class="empty-portfolio">
+                <mat-icon>collections</mat-icon>
+                <p>Este profissional ainda não adicionou trabalhos ao portfólio</p>
+              </div>
+            }
+          </div>
+        </mat-tab>
+
+        <!-- Tab Avaliações -->
+        <mat-tab label="Avaliações ({{ avaliacoes().length }})">
+          <div class="tab-content">
+            @if (avaliacoes().length > 0) {
+              <div class="avaliacoes-list">
+                @for (avaliacao of avaliacoes(); track avaliacao.id) {
+                  <mat-card class="avaliacao-card">
+                    <div class="avaliacao-header">
+                      <div class="avaliador-info">
+                        <div class="avaliador-avatar">
+                          <mat-icon>person</mat-icon>
+                        </div>
+                        <div>
+                          <p class="avaliador-nome">Cliente Verificado</p>
+                          <p class="avaliacao-data">{{ formatDate(avaliacao.createdAt) }}</p>
+                        </div>
+                      </div>
+                      <div class="avaliacao-rating">
+                        @for (star of getStarArray(avaliacao.nota); track $index) {
+                          <mat-icon [class.filled]="star === 1">
+                            {{ star === 1 ? 'star' : 'star_border' }}
+                          </mat-icon>
+                        }
+                      </div>
+                    </div>
+                    <mat-divider></mat-divider>
+                    <p class="avaliacao-comentario">{{ avaliacao.comentario }}</p>
+                  </mat-card>
+                }
+              </div>
+            } @else {
+              <div class="empty-avaliacoes">
+                <mat-icon>rate_review</mat-icon>
+                <p>Este profissional ainda não possui avaliações</p>
+              </div>
+            }
+          </div>
+        </mat-tab>
+      </mat-tab-group>
+    </div>
+  }
+</div>
