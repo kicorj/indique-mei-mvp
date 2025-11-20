@@ -121,8 +121,9 @@ export class UserService {
     if (filters.bairro) {
       filtered = filtered.filter(p => p.bairro === filters.bairro);
     }
-    if (filters.avaliacaoMinima) {
-      filtered = filtered.filter(p => p.avaliacaoMedia >= filters.avaliacaoMinima);
+    if (filters.avaliacaoMinima !== undefined) {
+      const minRating = filters.avaliacaoMinima;
+      filtered = filtered.filter(p => p.avaliacaoMedia >= minRating);
     }
 
     return of(filtered).pipe(delay(500));
