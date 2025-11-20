@@ -1,0 +1,276 @@
+✅ MVP BÁSICO — INDQUE MEI (Versão Validável)
+
+🔷 1. Página Institucional (Home)
+
+Precisa conter:
+
+Nome e proposta da plataforma
+
+Explicação rápida “como funciona”
+
+Benefícios para cliente, profissional e indicador
+
+Botão Cadastrar (topo e final da página)
+
+Links obrigatórios:
+
+Termos de uso
+
+Política de privacidade
+
+Fale conosco
+
+Sobre a empresa
+
+
+
+⚠️ Isso já te traz credibilidade e estrutura para apresentar a investidores.
+
+
+---
+
+🔷 2. Cadastro simples — Usuário Contratante / Indicador
+
+Essa é a porta de entrada do MVP.
+
+Campos mínimos:
+
+Nome completo
+
+Telefone / Whatsapp
+
+E-mail
+
+Cidade e bairro
+
+Aceite dos termos
+
+Botão “Convidar amigos”
+
+Botão “Continuar sem convidar”
+
+
+Após cadastro, o usuário pode:
+
+Publicar um pedido de serviço
+
+Indicar alguém que conhece
+
+Receber solicitações de indicação
+
+
+
+---
+
+🔷 3. Cadastro profissional (somente básico no MVP)
+
+Aqui entra a versão enxuta do cadastro do profissional.
+
+Campos essenciais:
+
+Nome
+
+Telefone / WhatsApp
+
+E-mail
+
+Cidade e bairro
+
+Categoria principal do serviço
+
+1 ou 2 fotos iniciais do portfólio (não precisa mais)
+
+Aceite dos termos profissionais
+
+
+E o profissional já pode:
+
+Receber indicações
+
+Ser encontrado na busca
+
+Receber comentários depois de um serviço pago
+
+
+
+---
+
+🔷 4. Publicação de Serviço (pedido do cliente)
+
+Campos mínimos:
+
+Título do serviço
+
+Descrição curta
+
+Categoria
+
+Cidade e bairro
+
+Valor estimado
+
+Botão Enviar para meus contatos
+
+
+Fluxo:
+
+1. Envia notificação para contatos já cadastrados
+
+
+2. Eles podem indicar alguém da rede
+
+
+3. Se nenhum contato indicar → entra no motor de busca por região
+
+
+
+
+---
+
+🔷 5. Sistema de Indicação
+
+MVP suficiente para validar:
+
+Botão “Indicar um profissional”
+
+Escolher um contato da lista OU profissional encontrado pela busca
+
+Registro da indicação na base
+
+Indicação vinculada ao serviço / pedido
+
+
+
+---
+
+🔷 6. Busca de profissionais
+
+Busca simples, porém funcional:
+
+Filtros mínimos:
+
+Categoria
+
+Cidade
+
+Avaliação média
+
+Conexões em comum (se houver)
+
+
+Resultado:
+
+Lista com Nome, Foto, Nota e Botão “Selecionar”
+
+
+
+---
+
+🔷 7. Fluxo de contratação
+
+O MVP precisa de 1 fluxo básico, ainda sem complexidade:
+
+1. Cliente escolhe o profissional
+
+
+2. Profissional aceita
+
+
+3. Cliente confirma (sem pagamento ainda dentro do MVP básico)
+
+
+4. Serviço muda para “Em andamento”
+
+
+5. Conclusão manual pelo profissional
+
+
+6. Cliente avalia com 1 a 5 estrelas + comentário
+
+
+
+⚠️ Pagamento interno, antecipação e cartão entram somente no MVP avançado, depois da validação inicial.
+
+
+---
+
+🔷 8. Área do Profissional (Dashboard simples)
+
+Itens mínimos:
+
+Nome, foto, categoria
+
+Lista de serviços recebidos
+
+Lista de serviços concluídos
+
+Avaliação média
+
+Portfólio básico
+
+
+
+---
+
+🔷 9. Área do Indicador
+
+Essa parte é essencial no MVP, porque a indicação é seu diferencial.
+
+Precisa conter:
+
+Quantidade de indicações feitas
+
+Quantidade de indicações aceitas
+
+Quantidade de indicações concluídas
+
+Ganhos pendentes / confirmados (mesmo sem pagamento real ainda)
+
+
+
+---
+
+🔷 10. Sistema de Avaliações
+
+Um dos pilares da credibilidade.
+
+MVP mínimo:
+
+Apenas quem contratou pode avaliar
+
+Comentário curto + estrela
+
+Mostrar somente os 10 mais recentes
+
+
+
+---
+
+🔷 11. Termos de Uso e Política de Privacidade
+
+Obrigatório para:
+
+LGPD
+
+Apresentar a assistentes
+
+
+
+
+
+---
+
+🎯 Resumo do MVP Essencial
+
+
+✔ Página institucional
+✔ Cadastro simples
+✔ Cadastro profissional básico
+✔ Publicação de pedido
+✔ Sistema de indicação
+✔ Busca regional de profissionais
+✔ Fluxo básico de contratação
+✔ Avaliação do serviço
+✔ Painel simples para profissional
+✔ Painel simples para indicador
+✔ Termos e Política
