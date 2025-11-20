@@ -1,0 +1,77 @@
+<div class="chat-container">
+  <!-- Header -->
+  <div class="chat-header">
+    <button mat-icon-button (click)="router.navigate(['/contratante/indicacoes'])">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+
+    @if (profissional(); as prof) {
+      <div class="prof-info">
+        <div class="prof-avatar">
+          <mat-icon>person</mat-icon>
+        </div>
+        <div class="prof-details">
+          <h2>{{ prof.nome }}</h2>
+          <p>{{ prof.categoria }}</p>
+        </div>
+      </div>
+    }
+
+    <button mat-icon-button (click)="enviarProposta()">
+      <mat-icon>description</mat-icon>
+    </button>
+  </div>
+
+  <!-- Messages -->
+  <div class="messages-container" #messagesContainer>
+    <div class="messages-list">
+      @for (message of messages(); track message.id) {
+        <div class="message" [class.message-me]="message.isMe">
+          <div class="message-bubble">
+            <p>{{ message.text }}</p>
+            <span class="message-time">{{ formatTime(message.timestamp) }}</span>
+          </div>
+        </div>
+      }
+    </div>
+
+    <!-- Quick Action após proposta -->
+    @if (messages().length > 2) {
+      <div class="quick-action-card">
+        <mat-card>
+          <mat-icon>info</mat-icon>
+          <p>Proposta recebida! Quer agendar o serviço?</p>
+          <button
+            mat-raised-button
+            color="primary"
+            (click)="aceitarProposta()"
+          >
+            <mat-icon>event</mat-icon>
+            Agendar Agora
+          </button>
+        </mat-card>
+      </div>
+    }
+  </div>
+
+  <!-- Input -->
+  <div class="chat-input">
+    <mat-form-field appearance="outline" class="message-field">
+      <input
+        matInput
+        [(ngModel)]="newMessage"
+        placeholder="Digite sua mensagem..."
+        (keyup.enter)="sendMessage()"
+        autocomplete="off"
+      >
+      <button
+        matSuffix
+        mat-icon-button
+        (click)="sendMessage()"
+        [disabled]="!newMessage.trim()"
+      >
+        <mat-icon [class.active]="newMessage.trim()">send</mat-icon>
+      </button>
+    </mat-form-field>
+  </div>
+</div>

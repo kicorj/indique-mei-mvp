@@ -1,0 +1,181 @@
+<div class="indicacoes-container">
+  <div class="indicacoes-header">
+    <button mat-icon-button routerLink="/home" class="back-button">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <h1>Indicações Recebidas</h1>
+  </div>
+
+  <div class="indicacoes-content">
+    <!-- Filtros -->
+    <div class="filters-section">
+      <mat-form-field appearance="outline" class="filter-field">
+        <mat-label>Avaliação</mat-label>
+        <mat-select [(value)]="filtroAvaliacao" (selectionChange)="filtroAvaliacao.set($event.value)">
+          @for (option of avaliacaoOptions; track option.value) {
+            <mat-option [value]="option.value">
+              <mat-icon>star</mat-icon>
+              {{ option.label }}
+            </mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="filter-field">
+        <mat-label>Distância</mat-label>
+        <mat-select [(value)]="filtroDistancia" (selectionChange)="filtroDistancia.set($event.value)">
+          @for (option of distanciaOptions; track option.value) {
+            <mat-option [value]="option.value">
+              <mat-icon>place</mat-icon>
+              {{ option.label }}
+            </mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="filter-field">
+        <mat-label>Preço</mat-label>
+        <mat-select [(value)]="filtroPreco" (selectionChange)="filtroPreco.set($event.value)">
+          @for (option of precoOptions; track option.value) {
+            <mat-option [value]="option.value">
+              <mat-icon>attach_money</mat-icon>
+              {{ option.label }}
+            </mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <!-- Loading -->
+    @if (loading()) {
+      <div class="loading-state">
+        <mat-spinner></mat-spinner>
+        <p>Carregando indicações...</p>
+      </div>
+    }
+
+    <!-- Lista de Profissionais -->
+    @if (!loading() && profissionaisFiltrados.length > 0) {
+      <div class="results-info">
+        <mat-icon>info</mat-icon>
+        <span>{{ profissionaisFiltrados.length }} profissionais indicados por sua rede de confiança</span>
+      </div>
+
+      <div class="profissionais-grid">
+        @for (prof of profissionaisFiltrados; track prof.id) {
+          <mat-card class="profissional-card">
+            <!-- Badge de Indicação -->
+            <div class="indication-badge">
+              <mat-icon>recommend</mat-icon>
+              <span>Indicado por {{ prof.indicadoPor }}</span>
+            </div>
+
+            <!-- Foto -->
+            <div class="prof-photo">
+              <div class="photo-placeholder">
+                <mat-icon>person</mat-icon>
+              </div>
+              <button
+                mat-icon-button
+                class="fav-button"
+                (click)="favoritar(prof.id); $event.stopPropagation()"
+              >
+                <mat-icon>favorite_border</mat-icon>
+              </button>
+            </div>
+
+            <!-- Info -->
+            <div class="prof-info">
+              <h3>{{ prof.nome }}</h3>
+
+              <div class="prof-category">
+                <mat-icon>work</mat-icon>
+                <span>{{ prof.categoria }}</span>
+              </div>
+
+              <!-- Rating -->
+              <div class="prof-rating">
+                <div class="stars">
+                  @for (star of getStarArray(prof.avaliacaoMedia); track $index) {
+                    <mat-icon [class.filled]="star === 1">
+                      {{ star === 1 ? 'star' : 'star_border' }}
+                    </mat-icon>
+                  }
+                </div>
+                <span class="rating-text">{{ prof.avaliacaoMedia.toFixed(1) }}</span>
+                <span class="rating-count">({{ prof.servicosRealizados }} serviços)</span>
+              </div>
+
+              <!-- Localização e Distância -->
+              <div class="prof-location">
+                <mat-icon>place</mat-icon>
+                <span>{{ prof.bairro }}, {{ prof.cidade }}</span>
+                <mat-chip class="distance-chip">{{ prof.distanciaKm }} km</mat-chip>
+              </div>
+
+              <!-- Preço -->
+              @if (prof.precoBase) {
+                <div class="prof-price">
+                  <mat-icon>attach_money</mat-icon>
+                  <span>A partir de R$ {{ prof.precoBase.toLocaleString('pt-BR') }}</span>
+                </div>
+              }
+
+              <!-- Badges -->
+              <div class="prof-badges">
+                @if (prof.verificadoMEI) {
+                  <mat-chip class="badge-mei">
+                    <mat-icon>verified</mat-icon>
+                    MEI Verificado
+                  </mat-chip>
+                }
+              </div>
+            </div>
+
+            <!-- Ações -->
+            <div class="prof-actions">
+              <button
+                mat-stroked-button
+                color="primary"
+                (click)="verPerfil(prof.id)"
+              >
+                <mat-icon>visibility</mat-icon>
+                Ver Perfil
+              </button>
+              <button
+                mat-raised-button
+                color="primary"
+                (click)="iniciarChat(prof.id)"
+              >
+                <mat-icon>chat</mat-icon>
+                Conversar
+              </button>
+            </div>
+          </mat-card>
+        }
+      </div>
+    }
+
+    <!-- Estado Vazio -->
+    @if (!loading() && profissionaisFiltrados.length === 0 && profissionais().length === 0) {
+      <div class="empty-state">
+        <mat-icon>people_outline</mat-icon>
+        <h2>Nenhuma indicação ainda</h2>
+        <p>Aguarde enquanto sua rede de contatos indica profissionais para você!</p>
+        <button mat-raised-button color="primary" routerLink="/home">
+          <mat-icon>home</mat-icon>
+          Voltar ao Início
+        </button>
+      </div>
+    }
+
+    <!-- Nenhum resultado nos filtros -->
+    @if (!loading() && profissionaisFiltrados.length === 0 && profissionais().length > 0) {
+      <div class="empty-state">
+        <mat-icon>filter_alt_off</mat-icon>
+        <h2>Nenhum profissional encontrado</h2>
+        <p>Tente ajustar os filtros para ver mais resultados</p>
+      </div>
+    }
+  </div>
+</div>

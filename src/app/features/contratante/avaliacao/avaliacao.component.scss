@@ -1,0 +1,259 @@
+.avaliacao-container {
+  min-height: 100vh;
+  background-color: var(--background-gray);
+}
+
+.success-header {
+  background: var(--gradient-primary);
+  color: white;
+  text-align: center;
+  padding: var(--spacing-xl) var(--spacing-lg);
+
+  .success-icon {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto var(--spacing-lg);
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: scaleIn 0.5s ease-out;
+
+    mat-icon {
+      font-size: 48px;
+      width: 48px;
+      height: 48px;
+      color: white;
+    }
+  }
+
+  h1 {
+    margin: 0 0 var(--spacing-sm) 0;
+    font-size: 1.75rem;
+    font-weight: 600;
+  }
+
+  p {
+    margin: 0;
+    opacity: 0.9;
+  }
+}
+
+.avaliacao-content {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: var(--spacing-lg);
+  position: relative;
+  top: -30px;
+
+  .prof-card {
+    padding: var(--spacing-lg);
+    margin-bottom: var(--spacing-lg);
+    box-shadow: var(--shadow-md);
+
+    .prof-info {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-md);
+
+      .prof-avatar {
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        background: var(--background-gray);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        mat-icon {
+          font-size: 32px;
+          width: 32px;
+          height: 32px;
+          color: var(--text-secondary);
+        }
+      }
+
+      h3 {
+        margin: 0;
+        font-size: 1.25rem;
+        font-weight: 600;
+      }
+
+      p {
+        margin: 4px 0 0 0;
+        color: var(--text-secondary);
+      }
+    }
+  }
+
+  .rating-card {
+    padding: var(--spacing-xl);
+    margin-bottom: var(--spacing-lg);
+    text-align: center;
+
+    h2 {
+      margin: 0 0 var(--spacing-sm) 0;
+      font-size: 1.5rem;
+      font-weight: 600;
+    }
+
+    .subtitle {
+      color: var(--text-secondary);
+      margin: 0 0 var(--spacing-xl) 0;
+    }
+
+    .stars-rating {
+      display: flex;
+      justify-content: center;
+      gap: var(--spacing-sm);
+      margin-bottom: var(--spacing-md);
+
+      .star-button {
+        width: 56px;
+        height: 56px;
+
+        mat-icon {
+          font-size: 48px;
+          width: 48px;
+          height: 48px;
+          color: #e0e0e0;
+          transition: all 0.3s ease;
+        }
+
+        &.active mat-icon {
+          color: #ffc107;
+          transform: scale(1.1);
+        }
+
+        &:hover mat-icon {
+          transform: scale(1.15);
+        }
+      }
+    }
+
+    .rating-label {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--primary-green);
+      margin: 0 0 var(--spacing-xl) 0;
+    }
+
+    form {
+      margin-top: var(--spacing-xl);
+
+      mat-form-field {
+        width: 100%;
+        text-align: left;
+      }
+    }
+  }
+
+  .gorjeta-card {
+    padding: var(--spacing-xl);
+    margin-bottom: var(--spacing-lg);
+
+    h3 {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--spacing-sm);
+      margin: 0 0 var(--spacing-sm) 0;
+      font-size: 1.25rem;
+      font-weight: 600;
+
+      mat-icon {
+        color: #e91e63;
+      }
+    }
+
+    .subtitle {
+      text-align: center;
+      color: var(--text-secondary);
+      margin: 0 0 var(--spacing-xl) 0;
+    }
+
+    .gorjeta-options {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--spacing-md);
+      margin-bottom: var(--spacing-lg);
+
+      button {
+        height: 56px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+
+        &.selected {
+          background: var(--gradient-primary);
+          color: white;
+          border-color: transparent;
+        }
+
+        &:hover:not(.selected) {
+          transform: translateY(-2px);
+          box-shadow: var(--shadow-sm);
+        }
+      }
+    }
+
+    .gorjeta-selected {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--spacing-sm);
+      padding: var(--spacing-md);
+      background: #fce4ec;
+      border-radius: var(--radius-sm);
+      color: #e91e63;
+      font-weight: 500;
+
+      mat-icon {
+        color: #e91e63;
+      }
+    }
+  }
+
+  .actions {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+
+    button {
+      height: 52px;
+      font-size: 1rem;
+
+      mat-icon {
+        margin-right: var(--spacing-xs);
+      }
+    }
+
+    .submit-btn {
+      background: var(--gradient-primary);
+      font-weight: 600;
+    }
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@media (max-width: 768px) {
+  .avaliacao-content {
+    padding: var(--spacing-md);
+
+    .gorjeta-card .gorjeta-options {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+}
