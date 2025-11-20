@@ -1,0 +1,151 @@
+<div class="home-container">
+  <!-- Header -->
+  <mat-toolbar class="header-toolbar gradient-bg">
+    <mat-icon class="logo-icon">location_on</mat-icon>
+    <span class="toolbar-title">Indique MEI</span>
+    <span class="spacer"></span>
+    <button mat-icon-button [matBadge]="3" matBadgeColor="warn">
+      <mat-icon>notifications</mat-icon>
+    </button>
+    <button mat-icon-button (click)="logout()">
+      <mat-icon>logout</mat-icon>
+    </button>
+  </mat-toolbar>
+
+  <!-- Main Content -->
+  <div class="content-wrapper">
+    @if (currentUser(); as user) {
+      <!-- Welcome Section -->
+      <div class="welcome-section">
+        <h1>Olá, {{ user.nome }}!</h1>
+        <p class="role-badge">{{ getRoleName(user.role) }}</p>
+        <p class="location">
+          <mat-icon>place</mat-icon>
+          {{ user.cidade }} • {{ user.bairro }}
+        </p>
+      </div>
+
+      <!-- Quick Actions by Role -->
+      <div class="quick-actions">
+        <h2>Ações rápidas</h2>
+
+        @if (user.role === UserRole.CONTRATANTE) {
+          <div class="action-cards">
+            <mat-card class="action-card">
+              <mat-icon class="card-icon">add_circle</mat-icon>
+              <h3>Publicar Necessidade</h3>
+              <p>Descreva o serviço que você precisa</p>
+              <button mat-raised-button color="primary">Criar Pedido</button>
+            </mat-card>
+
+            <mat-card class="action-card">
+              <mat-icon class="card-icon">people</mat-icon>
+              <h3>Minhas Indicações</h3>
+              <p>Veja profissionais indicados para você</p>
+              <button mat-stroked-button color="primary">Ver Indicações</button>
+            </mat-card>
+
+            <mat-card class="action-card">
+              <mat-icon class="card-icon">history</mat-icon>
+              <h3>Meus Pedidos</h3>
+              <p>Acompanhe seus serviços</p>
+              <button mat-stroked-button color="primary">Ver Histórico</button>
+            </mat-card>
+          </div>
+        }
+
+        @if (user.role === UserRole.INDICADOR) {
+          <div class="action-cards">
+            <mat-card class="action-card">
+              <mat-icon class="card-icon">recommend</mat-icon>
+              <h3>Indicar Profissional</h3>
+              <p>Indique alguém da sua rede</p>
+              <button mat-raised-button color="primary">Fazer Indicação</button>
+            </mat-card>
+
+            <mat-card class="action-card">
+              <mat-icon class="card-icon">feed</mat-icon>
+              <h3>Pedidos Próximos</h3>
+              <p>Veja serviços na sua região</p>
+              <button mat-stroked-button color="primary">Ver Pedidos</button>
+            </mat-card>
+
+            <mat-card class="action-card">
+              <mat-icon class="card-icon">account_balance_wallet</mat-icon>
+              <h3>Minha Carteira</h3>
+              <p>Acompanhe suas recompensas</p>
+              <button mat-stroked-button color="primary">Ver Saldo</button>
+            </mat-card>
+          </div>
+        }
+
+        @if (user.role === UserRole.PROFISSIONAL) {
+          <div class="action-cards">
+            <mat-card class="action-card">
+              <mat-icon class="card-icon">work</mat-icon>
+              <h3>Meus Pedidos</h3>
+              <p>Gerencie suas solicitações</p>
+              <button mat-raised-button color="primary">Ver Pedidos</button>
+            </mat-card>
+
+            <mat-card class="action-card">
+              <mat-icon class="card-icon">collections</mat-icon>
+              <h3>Meu Portfólio</h3>
+              <p>Atualize seus trabalhos</p>
+              <button mat-stroked-button color="primary">Editar Perfil</button>
+            </mat-card>
+
+            <mat-card class="action-card">
+              <mat-icon class="card-icon">star</mat-icon>
+              <h3>Avaliações</h3>
+              <p>Veja o feedback dos clientes</p>
+              <button mat-stroked-button color="primary">Ver Avaliações</button>
+            </mat-card>
+          </div>
+        }
+      </div>
+
+      <!-- Stats Section -->
+      <div class="stats-section">
+        <h2>Estatísticas</h2>
+        <div class="stats-grid">
+          <div class="stat-card">
+            <mat-icon>pending_actions</mat-icon>
+            <div class="stat-value">0</div>
+            <div class="stat-label">Pedidos Ativos</div>
+          </div>
+          <div class="stat-card">
+            <mat-icon>check_circle</mat-icon>
+            <div class="stat-value">0</div>
+            <div class="stat-label">Concluídos</div>
+          </div>
+          <div class="stat-card">
+            <mat-icon>people</mat-icon>
+            <div class="stat-value">0</div>
+            <div class="stat-label">Indicações</div>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+
+  <!-- Bottom Navigation (Mobile) -->
+  <div class="bottom-nav">
+    <button mat-button class="nav-item active">
+      <mat-icon>home</mat-icon>
+      <span>Home</span>
+    </button>
+    <button mat-button class="nav-item">
+      <mat-icon>search</mat-icon>
+      <span>Buscar</span>
+    </button>
+    <button mat-button class="nav-item">
+      <mat-icon>chat</mat-icon>
+      <span>Chat</span>
+    </button>
+    <button mat-button class="nav-item">
+      <mat-icon>person</mat-icon>
+      <span>Perfil</span>
+    </button>
+  </div>
+</div>

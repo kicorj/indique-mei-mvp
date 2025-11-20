@@ -1,0 +1,65 @@
+<div class="onboarding-container">
+  <div class="logo-section">
+    <div class="logo">
+      <div class="logo-icon">
+        <mat-icon>location_on</mat-icon>
+      </div>
+      <h1 class="logo-text gradient-text">Indique MEI</h1>
+    </div>
+    <p class="tagline">Conectando Confiança</p>
+  </div>
+
+  <div class="carousel-section">
+    <div class="carousel">
+      @for (slide of slides; track $index) {
+        @if ($index === currentSlide()) {
+          <div class="slide fade-in" [attr.data-slide]="$index">
+            <div class="slide-icon">
+              <mat-icon class="large-icon">{{ slide.icon }}</mat-icon>
+            </div>
+            <h2 class="slide-title">{{ slide.title }}</h2>
+            <p class="slide-description">{{ slide.description }}</p>
+          </div>
+        }
+      }
+    </div>
+
+    <div class="pagination">
+      @for (slide of slides; track $index) {
+        <span
+          class="dot"
+          [class.active]="$index === currentSlide()"
+          (click)="goToSlide($index)"
+        ></span>
+      }
+    </div>
+  </div>
+
+  <div class="actions">
+    <button
+      mat-raised-button
+      color="primary"
+      class="btn-primary"
+      (click)="createAccount()"
+    >
+      Criar conta
+    </button>
+
+    <button
+      mat-stroked-button
+      color="primary"
+      class="btn-secondary"
+      (click)="login()"
+    >
+      Entrar
+    </button>
+
+    <button
+      mat-button
+      class="btn-text"
+      (click)="skip()"
+    >
+      Pular
+    </button>
+  </div>
+</div>
