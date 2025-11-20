@@ -1,0 +1,228 @@
+<div class="publish-container">
+  <div class="publish-header">
+    <button mat-icon-button routerLink="/home" class="back-button">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <h1>Publicar Necessidade</h1>
+  </div>
+
+  <div class="publish-content">
+    <mat-card class="form-card">
+      <form [formGroup]="serviceForm" (ngSubmit)="publish()">
+        <!-- Categoria -->
+        <mat-form-field appearance="outline">
+          <mat-label>Categoria do Serviço</mat-label>
+          <mat-select formControlName="categoria" placeholder="Selecione uma categoria">
+            @for (category of categories(); track category.id) {
+              <mat-option [value]="category.nome">
+                <mat-icon>{{ category.icone }}</mat-icon>
+                {{ category.nome }}
+              </mat-option>
+            }
+          </mat-select>
+          <mat-icon matPrefix>category</mat-icon>
+          @if (serviceForm.get('categoria')?.hasError('required') && serviceForm.get('categoria')?.touched) {
+            <mat-error>Categoria é obrigatória</mat-error>
+          }
+        </mat-form-field>
+
+        <!-- Título -->
+        <mat-form-field appearance="outline">
+          <mat-label>Título do Serviço</mat-label>
+          <input
+            matInput
+            formControlName="titulo"
+            placeholder="Ex: Fotógrafo para casamento"
+            maxlength="100"
+          >
+          <mat-icon matPrefix>title</mat-icon>
+          <mat-hint align="end">{{ serviceForm.get('titulo')?.value?.length || 0 }}/100</mat-hint>
+          @if (serviceForm.get('titulo')?.hasError('required') && serviceForm.get('titulo')?.touched) {
+            <mat-error>Título é obrigatório</mat-error>
+          }
+          @if (serviceForm.get('titulo')?.hasError('minlength')) {
+            <mat-error>Título deve ter no mínimo 10 caracteres</mat-error>
+          }
+        </mat-form-field>
+
+        <!-- Descrição -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Descrição Detalhada</mat-label>
+          <textarea
+            matInput
+            formControlName="descricao"
+            placeholder="Descreva o que você precisa com o máximo de detalhes possível..."
+            rows="6"
+            maxlength="500"
+          ></textarea>
+          <mat-icon matPrefix>description</mat-icon>
+          <mat-hint align="end">{{ serviceForm.get('descricao')?.value?.length || 0 }}/500</mat-hint>
+          @if (serviceForm.get('descricao')?.hasError('required') && serviceForm.get('descricao')?.touched) {
+            <mat-error>Descrição é obrigatória</mat-error>
+          }
+          @if (serviceForm.get('descricao')?.hasError('minlength')) {
+            <mat-error>Descrição deve ter no mínimo 50 caracteres</mat-error>
+          }
+        </mat-form-field>
+
+        <!-- Localização -->
+        <div class="location-row">
+          <mat-form-field appearance="outline">
+            <mat-label>Cidade</mat-label>
+            <input matInput formControlName="cidade" placeholder="São Paulo">
+            <mat-icon matPrefix>location_city</mat-icon>
+            @if (serviceForm.get('cidade')?.hasError('required') && serviceForm.get('cidade')?.touched) {
+              <mat-error>Cidade é obrigatória</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Bairro</mat-label>
+            <input matInput formControlName="bairro" placeholder="Vila Mariana">
+            <mat-icon matPrefix>place</mat-icon>
+            @if (serviceForm.get('bairro')?.hasError('required') && serviceForm.get('bairro')?.touched) {
+              <mat-error>Bairro é obrigatório</mat-error>
+            }
+          </mat-form-field>
+        </div>
+
+        <!-- Urgência -->
+        <div class="urgency-section">
+          <label class="section-label">
+            <mat-icon>schedule</mat-icon>
+            Urgência
+          </label>
+          <div class="urgency-options">
+            @for (option of urgencyOptions; track option.value) {
+              <button
+                type="button"
+                mat-stroked-button
+                class="urgency-btn"
+                [class.selected]="serviceForm.get('urgencia')?.value === option.value"
+                (click)="serviceForm.patchValue({ urgencia: option.value })"
+              >
+                <mat-icon>{{ option.icon }}</mat-icon>
+                <span>{{ option.label }}</span>
+              </button>
+            }
+          </div>
+        </div>
+
+        <!-- Orçamento -->
+        <mat-form-field appearance="outline">
+          <mat-label>Orçamento Estimado (Opcional)</mat-label>
+          <input
+            matInput
+            type="number"
+            formControlName="orcamentoEstimado"
+            placeholder="1000"
+          >
+          <span matPrefix>R$&nbsp;</span>
+          <mat-icon matPrefix>attach_money</mat-icon>
+          <mat-hint>Ajuda profissionais a entenderem o valor esperado</mat-hint>
+        </mat-form-field>
+
+        <!-- Upload de Fotos -->
+        <div class="photo-section">
+          <label class="section-label">
+            <mat-icon>add_photo_alternate</mat-icon>
+            Fotos (Opcional - Máx. 5)
+          </label>
+
+          @if (selectedPhotos().length < 5) {
+            <button
+              type="button"
+              mat-stroked-button
+              class="upload-btn"
+              (click)="photoInput.click()"
+            >
+              <mat-icon>add_a_photo</mat-icon>
+              Adicionar Fotos
+            </button>
+            <input
+              #photoInput
+              type="file"
+              accept="image/*"
+              multiple
+              style="display: none"
+              (change)="onPhotoSelect($event)"
+            >
+          }
+
+          @if (selectedPhotos().length > 0) {
+            <div class="photo-grid">
+              @for (photo of selectedPhotos(); track $index) {
+                <div class="photo-item">
+                  <img [src]="photo" alt="Foto do serviço">
+                  <button
+                    type="button"
+                    mat-icon-button
+                    class="remove-photo"
+                    (click)="removePhoto($index)"
+                  >
+                    <mat-icon>close</mat-icon>
+                  </button>
+                </div>
+              }
+            </div>
+          }
+        </div>
+
+        <!-- Ações -->
+        <div class="form-actions">
+          <button
+            type="button"
+            mat-stroked-button
+            color="primary"
+            (click)="saveDraft()"
+            [disabled]="loading()"
+          >
+            <mat-icon>save</mat-icon>
+            Salvar Rascunho
+          </button>
+
+          <button
+            type="submit"
+            mat-raised-button
+            color="primary"
+            class="publish-btn"
+            [disabled]="loading() || serviceForm.invalid"
+          >
+            @if (loading()) {
+              <mat-spinner diameter="20"></mat-spinner>
+            } @else {
+              <mat-icon>publish</mat-icon>
+              <span>Publicar</span>
+            }
+          </button>
+        </div>
+      </form>
+    </mat-card>
+
+    <!-- Info Card -->
+    <mat-card class="info-card">
+      <h3>
+        <mat-icon>info</mat-icon>
+        Como funciona?
+      </h3>
+      <ol>
+        <li>
+          <mat-icon>edit</mat-icon>
+          <span>Descreva o serviço que você precisa</span>
+        </li>
+        <li>
+          <mat-icon>people</mat-icon>
+          <span>Sua rede de contatos receberá a notificação</span>
+        </li>
+        <li>
+          <mat-icon>recommend</mat-icon>
+          <span>Amigos indicarão profissionais de confiança</span>
+        </li>
+        <li>
+          <mat-icon>check_circle</mat-icon>
+          <span>Escolha o melhor profissional e contrate!</span>
+        </li>
+      </ol>
+    </mat-card>
+  </div>
+</div>
